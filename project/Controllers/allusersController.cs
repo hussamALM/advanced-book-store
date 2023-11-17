@@ -260,7 +260,7 @@ namespace project.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult email(string address, string subject, string body)
         {
-            // i deleted the email info of mine, so in order to make it works you should add yours
+            // i deleted the email info of mine, so in order to make it works you should add yours 
 
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
             var mail = new MailMessage();
