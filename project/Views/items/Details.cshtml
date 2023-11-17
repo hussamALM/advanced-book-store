@@ -1,0 +1,75 @@
+﻿@model project.Models.items
+
+@{
+    ViewData["Title"] = "Details";
+}
+@{
+    Layout = "~/Views/Shared/" + ViewData["page"] + "Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: rgba(244, 233, 220, 0.411);
+    }</style>
+<h1 class="text-center">Book Details</h1>
+<hr class="mb-5"/>
+<div class="container">    
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.descr)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.descr)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.price)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.quantity)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.quantity)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.discount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.discount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.category)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.category)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.imagefilename)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.imagefilename)
+        </dd>
+        <dt>
+            Pic
+        </dt>
+        <dd>
+            <img src="~/images/@Model.imagefilename" height="150" />
+            <br />@Model.imagefilename
+
+        </dd>
+
+      
+    </dl>
+    @if ((string)ViewData["page"]=="customer") {
+        <a class="btn btn-success" asp-controller="orders" asp-action="buy" asp-route-id="@Model.Id">Buy now</a>
+    }
+</div>
+

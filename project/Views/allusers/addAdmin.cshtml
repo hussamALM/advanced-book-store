@@ -1,0 +1,69 @@
+﻿@model project.Models.allusers
+
+@{
+    ViewData["Title"] = "Add Admin";
+}
+@{
+    Layout = "~/Views/Shared/adminLayout.cshtml";
+}
+
+<style>
+    body {
+        background-color: rgba(244, 233, 220, 0.411);
+    }
+    .err{
+    color:red;
+    }
+    </style>
+<h1 class="text-center">Add Admin</h1>
+<hr class="mb-5"/>
+<div class="x1 text-black">
+    <div class="container" >
+        <form asp-action="addAdmin">
+            <div class="form-group">
+                <lebel for="name">name:</lebel>
+                <input id="name"
+                       name="name"
+                       type="text"
+                       class="form-control"
+                       placeholder="name"
+                       maxlength="12"
+                       required />
+            </div>
+            <div class="form-group pt-3">
+                <lebel for="password">Password:</lebel>
+                <input id="password"
+                       class="form-control"
+                       name="password"
+                       type="password"
+                       required />
+            </div>
+            <div class="form-group pt-3">
+                <lebel for="password2">Confirm Password:</lebel>
+                <input id="password2"
+                       class="form-control"
+                       name="password2"
+                       type="password"
+                       required />
+            </div>
+            
+            <div class="form-group mt-3">
+                <button  class="btn btn-success">
+                    Add Admin
+                </button>
+            </div>
+            @if (ViewData["err"] != null)
+            {
+                <h3 class="err mt-3">something went wrong</h3>
+                <p>@ViewData["err"]</p>
+            }
+          
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

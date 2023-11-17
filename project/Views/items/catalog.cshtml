@@ -1,0 +1,78 @@
+﻿@model IEnumerable<project.Models.items>
+@{
+    ViewData["Title"] = "catalog";
+}
+@{
+    Layout = "~/Views/Shared/customerLayout.cshtml";
+}
+<style>
+
+    body {
+        background-image: linear-gradient( to right bottom, rgba(0, 0, 0, 0.804), rgba(90, 90, 90, 0.84) ), url(../imgs/main.jpg);
+    }
+
+    .card {
+        transition: all 0.2s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgb(255, 255, 255, 0.4);
+        }
+</style>
+<div class="row">
+        <h4 class="text-center mb-4 text-white">Self Improvement Books</h4>
+    @foreach (var item in Model)
+    {
+        if (item.category=="self-improvement")
+        {
+
+            <div class="col-md-3">
+                <div class="card mb-5">
+                    <div class="card-header text-center">
+                        @item.name
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="~/images/@item.imagefilename" height="200" />
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-footer text-center">
+                            <a asp-controller="items" asp-action="details" asp-route-id="@item.Id">More</a> |
+                            <a asp-controller="orders" asp-action="buy" asp-route-id="@item.Id">Buy</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+</div>
+<div class="row mt-5">
+    <h4 class="text-center mb-4 text-white">Money Management Books</h4>
+    @foreach (var item in Model)
+    {
+        if (item.category == "money-management")
+        {
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        @item.name
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="~/images/@item.imagefilename" height="200" />
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-footer text-center">
+                            <a asp-controller="items" asp-action="details" asp-route-id="@item.Id">More</a> |
+                            <a asp-controller="orders" asp-action="buy" asp-route-id="@item.Id">Buy</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+</div>

@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/Views/Shared/adminLayout.cshtml";
+}
+@{
+    ViewData["Title"] = "Dashbooard";
+}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript"> 
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Category');
+        data.addColumn('number', 'Books');
+        data.addRows([
+            ['self-improvement', @ViewData["d1"]],
+            ['money-management', @ViewData["d2"]]
+        ]);
+        var options = {
+            'title': 'Number of Books',
+            'width': 400,
+            'height': 300
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+    }
+</script>
+<style>
+    body {
+        background-color: rgba(244, 233, 220, 0.411);
+    }</style>
+<h1 class="text-center">Dashboard</h1>
+<hr class="mb-5"/>
+
+<body>
+    <div class="container">
+    <div id="chart_div"></div>
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class='card'>
+                <div class='card-header bg-warning text-center'>self-improvement</div>
+                <div class='card-body'><img src='~/images/atomicHabits.jpg' ; width='50px'></div>
+                <div class='card-footer'>
+                    Number of Books <div> @ViewData["d1"] </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class='card'>
+                <div class='card-header bg-warning text-center'>money-management</div>
+                <div class='card-body'><img src='~/images/rdpd.jpg' ; width='50px'></div>
+                <div class='card-footer'>
+                    Number of Books <div>@ViewData["d2"] </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+

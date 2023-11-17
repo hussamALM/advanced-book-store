@@ -1,0 +1,80 @@
+﻿    @model IEnumerable<project.Models.items>
+
+@{
+    ViewData["Title"] = "list";
+}
+
+@{
+    Layout = "~/Views/Shared/" + ViewData["page"] + "Layout.cshtml";
+}
+<style>
+    body {
+        background-color: rgba(244, 233, 220, 0.411);
+    }
+
+    .err {
+        color: red;
+    }
+</style>
+<h1 class=" text-center">Books List</h1>
+<hr class="mb-5" />
+<div class="container ">
+   
+
+<table class="table ">
+    <thead>
+        <tr class="bg-dark text-white">
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.descr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.discount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.category)
+            </th>
+          
+        </tr>
+    </thead>
+    <tbody class="bg-light">
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.descr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.discount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.category)
+            </td>
+          
+        </tr>
+}
+    </tbody>
+</table>
+</div>

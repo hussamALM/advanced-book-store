@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Registration Page";
+}
+@{
+    Layout = null;
+}
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/registration.css" />
+<div class="x1 text-white">
+    <h1 class="text-center text-dark mb-3">Registration Page</h1>
+    <div class="container x2">
+        <form asp-action="registration">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input placeholder="hussam"
+                       class="form-control"
+                       type="text"
+                       maxlength="12"
+                       required
+                       id="username"
+                       name="username" />
+            </div>
+            <div class="form-group">
+                <label id="passwordlabel1" for="password">Password</label>
+                <input id="password1"
+                       class="form-control"
+                       type="password"
+                       maxlength="12"
+                       required
+                       name="password" />
+            </div>
+            <div class="form-group">
+                <label id="passwordlabel2" for="password2"> Confirm password</label>
+                <input id="password2"
+                       class="form-control"
+                       type="password"
+                       maxlength="12"
+                       required
+                       name="password2" />
+            </div>
+       
+            <div class="form-group">
+                <button id="bt" type="submit" class="btn btn-success">
+                    Sign up
+                </button>
+                <button type="reset" class="btn btn-danger">Clear</button>
+            </div>
+        </form>
+        @if (ViewData["err"] != null)
+        {
+            <h3 class="err">something went wrong</h3>
+            <p>@ViewData["err"]</p>
+        }
+        <div class="form-group ">
+            have account ?
+            <a asp-action="login">Login Now!</a>
+        </div>
+
+        <div>
+    </div>
+   
+     
+    </div>
+</div>
+

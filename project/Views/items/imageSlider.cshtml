@@ -1,0 +1,60 @@
+﻿@model IEnumerable<project.Models.items>
+
+@{
+    ViewData["Title"] = "iamge slider";
+}
+@{
+    Layout = "~/Views/Shared/customerLayout.cshtml";
+}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<style>
+    body {
+        background-image: linear-gradient( to right bottom, rgba(0, 0, 0, 0.804), rgba(90, 90, 90, 0.84) ), url(../imgs/main.jpg);
+       
+    }
+
+    .imging {
+        transition: all 0.2s;
+    }
+
+        .imging:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgb(255, 255, 255, 0.4);
+        }
+    .err {
+        color: red;
+    }
+</style>
+<div class="main">
+<div id="myCarousel" style="width:30% ; min-width:600px " class="carousel slide mx-auto " data-ride="carousel">
+    <div class="carousel-inner" id="demo">
+        @{
+            var counter = 0;
+        }
+        @foreach (var item in Model)
+        {
+            <div class='carousel-item   @(counter == 0 ? "active"  : String.Empty)'>
+                <center> <img class="imging" src="~/images/@item.imagefilename" height="450"> </center>
+                <div class='carousel-caption mx-auto' style='top:70%; left:15%;'>
+                    <h3 style='width:100px' class='mx-auto bg-secondary  text-white'>  @item.price SR  </h3>
+                    <h6 style='width:100px' class='mx-auto bg-light  text-white'>  <a asp-action="buy" asp-controller="orders" asp-route-id="@item.Id">Buy</a>  </h6>
+
+                </div>
+            </div>
+            counter++;
+        }
+    </div>
+    <a class="carousel-control-prev " href="#myCarousel" data-slide="prev">
+        <span class="carousel-control-prev-icon bg-secondary"></span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+        <span class="carousel-control-next-icon bg-secondary"></span>
+    </a>
+</div>
+</div>

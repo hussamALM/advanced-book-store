@@ -1,0 +1,65 @@
+﻿@model IEnumerable<project.Models.orderdetail>
+
+@{
+    ViewData["Title"] = "My Purchases";
+}
+@{
+    Layout = "~/Views/Shared/customerLayout.cshtml";
+}
+<style>
+    body {
+        background-color: rgba(244, 233, 220, 0.411);
+    }</style>
+<h1 class="text-center">My Orders</h1>
+<hr class="mb-5"/>
+@if (ViewData["msg"] != null)
+{
+    <h1 class="text-center text-success mb-5">@ViewData["msg"]</h1>
+}
+
+<table class="table mx-auto" style="width:98%" id="info">
+    @if (Model==null)
+    {
+        <h1 class="text-center">no data to be shown</h1>
+    } else{
+    <thead >
+      
+        <tr class="bg-dark text-white">
+            
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.totalPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.buyDate)
+            </th>
+        </tr>
+    </thead>
+    <tbody class="bg-light">
+        @foreach (var item in Model)
+        {
+            <tr>
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.totalPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.buyDate)
+                </td>
+
+            </tr>
+        }
+    </tbody>}
+</table>
+

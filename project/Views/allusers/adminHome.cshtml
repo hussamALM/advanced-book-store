@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewData["Title"] = "Home";
+}
+
+@{
+    Layout = "~/Views/Shared/adminLayout.cshtml";
+}
+<style>
+    .fix-err{
+    padding-bottom:34vh;
+    }
+
+    body {
+        background-image: linear-gradient( to right bottom, rgba(0, 0, 0,0.9), rgba(90, 90, 90, 0.84) ), url(../imgs/main.jpg);
+    }
+
+    .btn {
+        transition: all 0.2s;
+        border-radius: 100px;
+    }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 1rem 2rem rgba(255, 255, 255, 0.2);
+        }
+
+</style>
+<h3 class="text-center text-white  mb-5 ">
+    Welcome Back, @ViewData["name"]
+</h3>
+
+
+<h3 class="text-center text-white pt-3 mb-5">Quick Actions</h3>
+<div class="container fix-err text-center">
+    <div class="col">
+        <div class="col-md-3 mx-auto mt-5">
+            <a class="btn btn-dark" asp-controller="items" asp-action="dashboard" style="width: 100%">Dashboard</a>
+        </div>
+        <div class="col-md-3 mx-auto mt-3">
+            <a class="btn btn-dark" style="width: 100%" asp-controller="orders" asp-action="purchaseReport">Orders Report</a>
+        </div>
+        <div class="col-md-3 mx-auto mt-3">
+            <a class="btn btn-dark" style="width: 100%" asp-controller="allusers" asp-action="email">
+                Send an Email
+            </a>
+        </div>
+        <div class="col-md-3 mx-auto mt-3">
+            <a class="btn btn-dark" style="width: 100%" asp-controller="allusers" asp-action="addAdmin">
+                Add Admin
+            </a>
+        </div>
+    </div>
+</div>

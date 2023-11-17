@@ -1,0 +1,14 @@
+﻿.x1 {
+    height: 100vh;
+    background-image: url(../imgs/registration.jpg);
+    background-size: cover;
+}
+
+.x2 {
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.418);
+}
+.err {
+color:red;
+}

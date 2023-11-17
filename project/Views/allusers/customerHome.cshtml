@@ -1,0 +1,95 @@
+﻿@model IEnumerable<project.Models.items>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+@{Layout = "~/Views/Shared/customerLayout.cshtml";}
+<link rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+
+    body {
+        background-image: linear-gradient( to right bottom, rgba(0, 0, 0, 0.804), rgba(90, 90, 90, 0.84) ), url(../imgs/main.jpg);
+    }
+    .card{
+        transition: all 0.2s;
+    }
+    .card:hover{
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgb(255, 255, 255, 0.4);
+        }
+</style>
+<h3 class="text-center text-white pt-3 mb-5 ">
+    Welcome Back, @ViewData["name"]
+</h3>
+<div id="crs" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img height="400px"
+                 width="100%"
+                 src="~/imgs/img_slider1.jpg"
+                 alt="First slide" />
+        </div>
+
+        <div class="carousel-item">
+            <img height="400px"
+                 width="100%"
+                 src="~/imgs/img_slider2.jpg"
+                 alt="Second slide" />
+        </div>
+        <div class="carousel-item">
+            <img height="400px"
+                 width="100%"
+                 src="~/imgs/img_slider3.jpg"
+                 alt="Third slide" />
+        </div>
+        <div class="carousel-item">
+            <img height="400px"
+                 width="100%"
+                 src="~/imgs/img_slider4.jpg"
+                 alt="Third slide" />
+        </div>
+
+        <a class="carousel-control-prev" href="#crs" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+
+        <a class="carousel-control-next" href="#crs" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+</div>
+    <div class="jumbotron text-center mt-5">
+        <h1 style="font-size: 50px">BOOKSTORE</h1>
+        <p>Discover a world of books at our online store!</p>
+    </div>
+<div class="container-fluid">
+    
+    <h1 class="text-center mb-5 mt-3 text-white">our discounted items</h1>
+    <div class="row pb-5">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-md-3">
+                <div class="card mb-5">
+                    <div class="card-header text-center">
+                        @item.name
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="~/images/@item.imagefilename" height="200" />
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-footer text-center">
+                            <a asp-controller="items" asp-action="details" asp-route-id="@item.Id">More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

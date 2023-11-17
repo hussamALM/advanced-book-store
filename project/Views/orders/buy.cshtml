@@ -1,0 +1,103 @@
+﻿@model project.Models.items
+@{
+    ViewData["Title"] = "Buy";
+}
+@{
+    Layout = "~/Views/Shared/customerLayout.cshtml";
+}
+<div class="container-fluid">
+    <h1 class="text-center">Checkout</h1>
+    <div class="container">
+    <form asp-action="buy">
+        <div class="form-group">
+            
+            <input id="Id"
+                   name="Id"
+                   type="hidden"
+                   asp-for="Id"
+                   class="form-control"
+                    /></div>
+        <div class="form-group">
+            <lebel for="name  mt-4">Book Name:</lebel> <br />
+            <input id="name"
+                   name="name"
+                   type="text"
+                   asp-for="name"
+                   class="form-control"
+                   readonly />
+        </div>
+        <div class="form-group mt-4">
+            <lebel for="price">Book Price:</lebel> <br />
+            <input id="price"
+                   name="price"
+                   type="text"
+                   asp-for="price"
+                   class="form-control"
+                   readonly />
+        </div>
+        <div class="form-group  mt-4">
+            <lebel for="discount">Is discounted:</lebel> <br />
+            <input id="discount"
+                   name="discount"
+                   type="text"
+                   asp-for="discount"
+                   class="form-control"
+                   readonly />
+        </div>
+        <div class="form-group mt-4">
+            <lebel for="category">Category:</lebel> <br />
+            <input id="category"
+                   name="category"
+                   type="text"
+                   asp-for="category"
+                   class="form-control"
+                   readonly />
+        </div>
+        <img src="~/images/@Model.imagefilename" class="mt-3" height="250" />
+        <div class="form-group">
+            <lebel for="quantity" >Quantity:</lebel> <br />
+            <input id="quantity"
+                   onchange="gettotal()"
+                   name="quantity"
+                   type="number"
+                   value="1"
+                   class="form-control" />
+        </div>
+            <div id="no" class="mt-3"></div>
+
+        <h5 id="info" class="text-success mt-3"></h5>
+
+        <div class="form-group" id="done">
+            <input type="submit" value="order" class="btn btn-success mt-3" />
+        </div>
+    </form>
+    </div>
+</div>
+<script>
+    test = 1;
+    if (!@Model.quantity> 0) {
+        test = 0;
+        document.getElementById("done").innerHTML = `<h6 class="text-danger">this item is out of stuck</h6>`
+    }
+    function gettotal() {
+        if (test == 0) return;
+        let msg = "";
+        let quantity = document.getElementById("quantity");
+        if (quantity.value > @Model.quantity ) {
+            document.getElementById("no").innerHTML = `<h1 class="text-danger">you can't order more than ${@Model.quantity}</h1>`;
+            quantity.value = 1;
+            return;
+
+        }
+        let price = @Model.price;
+        if (document.getElementById("discount").value == "yes")
+        {
+        price = price - (price/10)
+        }
+        let total = price * quantity.value;
+        msg += `you have to pay ${total}`
+        document.getElementById("info").innerHTML = msg;
+    }
+    gettotal();
+
+</script>
