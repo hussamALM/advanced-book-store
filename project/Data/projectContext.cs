@@ -17,5 +17,9 @@ namespace project.Data
         public DbSet<project.Models.allusers> allusers { get; set; } = default!;
 
         public DbSet<project.Models.items>? items { get; set; }
+        public DbSet<project.Models.categories>? categories { get; set; }
+        public DbSet<project.Models.issues>? issues { get; set; }
+
+
     }
 }

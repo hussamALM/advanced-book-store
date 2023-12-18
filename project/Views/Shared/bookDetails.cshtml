@@ -74,7 +74,17 @@
 
     @if ((string)ViewData["page"] == "customer")
     {
-        <a class="btn btn-success" asp-controller="orders" asp-action="buy" asp-route-id="@Model.Id">Buy now</a>
+                        if (Model.quantity <= 0)
+                        {
+
+                            <h1 class="text-danger">This item is out of stock</h1>
+                        }
+                        else
+                        {
+                            <a class="btn btn-success" asp-controller="orders" asp-action="buy" asp-route-id="@Model.Id">Buy now</a>
+                            <a class="btn btn-info" asp-controller="items" asp-action="addItem" asp-route-id="@Model.Id">Add to Cart</a>
+                        }
+
     }
                 </div>
                 <div class="modal-footer">

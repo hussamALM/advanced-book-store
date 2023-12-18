@@ -6,12 +6,16 @@ using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Humanizer.Localisation.TimeToClockNotation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using project.Data;
 using project.Models;
+using System.Data.SqlClient;
+
 
 namespace project.Controllers
 {
@@ -260,6 +264,7 @@ namespace project.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult email(string address, string subject, string body)
         {
+
             // i deleted the email info of mine, so in order to make it works you should add yours 
 
             SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
@@ -278,15 +283,180 @@ namespace project.Controllers
             return View();
 
         }
+
+        public async Task<IActionResult> myAccount()
+        {
+            if (HttpContext.Session.GetString("name") == null)
+                return RedirectToAction("login", "home");
+            if (HttpContext.Session.GetString("role") != "customer")
+                return RedirectToAction("notHere", "home");
+            ViewData["err"] = HttpContext.Session.GetString("err");
+            HttpContext.Session.Remove("err");
+            ViewData["done"] = HttpContext.Session.GetString("done");
+            HttpContext.Session.Remove("done"); 
+            int id =Convert.ToInt32(HttpContext.Session.GetString("id"));
+            var user = await _context.allusers.FindAsync(id);
+            return View(user);
+        }
+        [HttpPost]
+        public async Task<IActionResult> changeName([Bind("Id,password,name")] allusers user) {
+
+            var oldUser = await _context.allusers.FindAsync(user.Id);
+            if (oldUser.password != user.password)
+            {
+                ViewData["err"] = "the password you entered is not correct !!";
+                HttpContext.Session.SetString("err", "the two password don't match");
+                return RedirectToAction("myAccount");
+            }
+            else
+            {
+                var builder = WebApplication.CreateBuilder();
+                string conStr = builder.Configuration.GetConnectionString("projectContext");
+                SqlConnection conn = new SqlConnection(conStr);
+                string sql = "update allusers set name = '"+user.name+"' where Id= '"+user.Id+"'";
+                SqlCommand comm = new SqlCommand(sql, conn);
+                conn.Open();
+                comm.ExecuteNonQuery();
+                conn.Close();
+
+                HttpContext.Session.SetString("done", "name has been successfully changed");
+                return RedirectToAction("myAccount");
+            }
+        }
+        public async Task<IActionResult> changePassword([Bind("Id,password")] allusers user,string newPass)
+        {
+
+            var oldUser = await _context.allusers.FindAsync(user.Id);
+            if (oldUser.password != user.password)
+            {
+                ViewData["err"] = "the password you entered is not correct !!";
+                HttpContext.Session.SetString("err", "the two password don't match");
+                return RedirectToAction("myAccount");
+            }
+            else
+            {
+                var builder = WebApplication.CreateBuilder();
+                string conStr = builder.Configuration.GetConnectionString("projectContext");
+                SqlConnection conn = new SqlConnection(conStr);
+                string sql = "update allusers set password = '" + newPass + "' where Id= '" + user.Id + "'";
+                SqlCommand comm = new SqlCommand(sql, conn);
+                conn.Open();
+                comm.ExecuteNonQuery();
+                conn.Close();
+
+                HttpContext.Session.SetString("done", "password has been successfully changed");
+                return RedirectToAction("myAccount");
+            }
+        }
+
+        public async Task<IActionResult> issue() {
+            if (HttpContext.Session.GetString("name") == null)
+                return RedirectToAction("login", "home");
+            if (HttpContext.Session.GetString("role") != "customer")
+                return RedirectToAction("notHere", "home");
+            int id =Convert.ToInt16( HttpContext.Session.GetString("id"));
+            var issues = await _context.issues.FromSqlRaw("select * from issues where userid='"+id+"' order by status").ToListAsync();
+            string role = HttpContext.Session.GetString("role");
+            ViewData["role"] = role;
+            ViewData["id"] = id;
+
+            return View(issues);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> newIssue(string title,string descr)
+        {
+            issues issue = new issues();
+            issue.userid = Convert.ToInt16(HttpContext.Session.GetString("id"));
+            issue.title = title;
+            issue.descr = descr;
+            issue.status = 0;
+            _context.Add(issue);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("issue");
+        }
+        public async Task<IActionResult> issuesReport()
+        {
+            if (HttpContext.Session.GetString("name") == null)
+                return RedirectToAction("login", "home");
+            if (HttpContext.Session.GetString("role") != "admin")
+                return RedirectToAction("notHere", "home");
+            List<issuesdetail> issues = new List<issuesdetail>();
+            var builder = WebApplication.CreateBuilder();
+            string conStr = builder.Configuration.GetConnectionString("projectContext");
+            SqlConnection conn = new SqlConnection(conStr);
+            string sql = "select issues.Id  as Id, allusers.name as name, issues.title as title, issues.descr as details, issues.status as status from issues, allusers where issues.userid = allusers.Id order by status";
+            SqlCommand comm = new SqlCommand(sql, conn);
+            conn.Open();
+            SqlDataReader reader = comm.ExecuteReader();
+            ViewData["new"] = "yes";
+            while (reader.Read())
+            {
+                if ((int)reader["status"]==0) {
+                    ViewData["new"] = "no";
+                }
+                
+                
+                issues.Add(new issuesdetail
+                {
+                  Id =(int)reader["Id"],
+                  name= (string)reader["name"],
+                  title = (string)reader["title"],
+                  details = (string)reader["details"],
+                  status = (int)reader["status"]
+                }
+                    );
+            }
+            conn.Close();
+            return View(issues);
+        }
+        public async Task<IActionResult> solveIssue(int? id)
+        {
+            var builder = WebApplication.CreateBuilder();
+            string conStr = builder.Configuration.GetConnectionString("projectContext");
+            SqlConnection conn = new SqlConnection(conStr);
+            string sql = "update issues set status = 1 where Id= '" + id + "'";
+            SqlCommand comm = new SqlCommand(sql, conn);
+            conn.Open();
+            comm.ExecuteNonQuery();
+            conn.Close();
+            return RedirectToAction("issuesReport");
+        }
+        public async Task<IActionResult> restoreIssue(int? id)
+        {
+            var builder = WebApplication.CreateBuilder();
+            string conStr = builder.Configuration.GetConnectionString("projectContext");
+            SqlConnection conn = new SqlConnection(conStr);
+            string sql = "update issues set status = 0 where Id= '" + id + "'";
+            SqlCommand comm = new SqlCommand(sql, conn);
+            conn.Open();
+            comm.ExecuteNonQuery();
+            conn.Close();
+            return RedirectToAction("issuesReport");
+        }
+        public async Task<IActionResult> rejectIssue(int? id)
+        {
+            var builder = WebApplication.CreateBuilder();
+            string conStr = builder.Configuration.GetConnectionString("projectContext");
+            SqlConnection conn = new SqlConnection(conStr);
+            string sql = "update issues set status = 2 where Id= '" + id + "'";
+            SqlCommand comm = new SqlCommand(sql, conn);
+            conn.Open();
+            comm.ExecuteNonQuery();
+            conn.Close();
+            return RedirectToAction("issuesReport");
+        }
         public IActionResult logout() {
             HttpContext.Session.Remove("id");
             HttpContext.Session.Remove("role");
             HttpContext.Session.Remove("name");
+            HttpContext.Session.Remove("cart");
             HttpContext.Response.Cookies.Delete("name");
             HttpContext.Response.Cookies.Delete("role");
             HttpContext.Response.Cookies.Delete("id");
             return RedirectToAction("login","home");   
         }
+
 
 
 

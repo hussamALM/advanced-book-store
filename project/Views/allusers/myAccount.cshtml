@@ -1,0 +1,51 @@
+﻿@model project.Models.allusers
+
+@{
+    ViewData["Title"] = "my account";
+}
+@{
+    Layout = "~/Views/Shared/customerLayout.cshtml";
+}
+<style>
+    body {
+        background-color: rgba(244, 233, 220, 0.411);
+    }
+
+</style>
+<h1 class="text-center">Your Account</h1>
+
+<hr />
+<h1 class="text-danger text-center">@ViewData["err"]</h1>
+<h1 class="text-success text-center">@ViewData["done"]</h1>
+
+<div class="container">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="name" class="control-label"></label>
+        <input asp-for="name" class="form-control" readonly />
+            <span asp-validation-for="name" class="text-danger"></span>
+        </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-info btn-md mb-1" data-toggle="modal" data-target="#changeNameModal">Change</button>
+        @await Html.PartialAsync("changeName",Model)
+
+    </div>
+        <div class="form-group">
+            <label asp-for="password" class="control-label">password</label>
+             <input asp-for="password" class="form-control" value="******" readonly />
+            <span asp-validation-for="password" class="text-danger"></span>
+        </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-info btn-md mb-1" data-toggle="modal" data-target="#changePasswordModal">Change</button>
+        @await Html.PartialAsync("changePassword",Model)
+
+    </div>
+        <div class="form-group">
+            <label asp-for="registDate" class="control-label"></label>
+            <input asp-for="registDate" class="form-control" readonly />
+            <span asp-validation-for="registDate" class="text-danger"></span>
+        </div>
+      
+</div>
+

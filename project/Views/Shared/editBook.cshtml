@@ -18,10 +18,9 @@
 
 <h1>Edit</h1>
 
-<h4>items</h4>
-<hr />
+                        <h4>Book Info</h4>
+                        <hr />
 <div class="row">
-    <div class="col-md-4">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -60,8 +59,13 @@
                 <label class="control-label">Catagory</label>
                 <select class="form-control" asp-for="category">
                     <option value="0">Please select</option>
-                    <option value="self-improvement">self-improvement</option>
-                    <option value="money-management">money-management</option>
+                                            @foreach (categories category in ViewBag.categories)
+                                            {
+                                                <option value="@category.name">@category.name</option>
+
+
+
+                                            }
                 </select>
                 <span asp-validation-for="category" class="text-danger"></span>
             </div>
@@ -77,7 +81,6 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
-    </div>
 </div>
 
                     </div>

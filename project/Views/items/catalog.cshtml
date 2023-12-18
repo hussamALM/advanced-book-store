@@ -21,58 +21,45 @@
         }
 </style>
 <div class="row">
-        <h4 class="text-center mb-4 text-white">Self Improvement Books</h4>
-    @foreach (var item in Model)
-    {
-        if (item.category=="self-improvement")
+    @{
+        foreach (categories category in ViewBag.categories)
         {
+            <h4 class="text-center mb-4 text-white">@category.name Books</h4>
 
-            <div class="col-md-3">
-                <div class="card mb-5">
-                    <div class="card-header text-center">
-                        @item.name
-                    </div>
-                    <div class="card-body text-center">
-                        <img src="~/images/@item.imagefilename" height="200" />
-                    </div>
-                    <div class="card-footer">
-                        <div class="card-footer text-center">
-                            <a asp-controller="items" asp-action="details" asp-route-id="@item.Id">More</a> |
-                            <a asp-controller="orders" asp-action="buy" asp-route-id="@item.Id">Buy</a>
+            foreach (items item in Model)
+            {
+                if (item.category == category.name)
+                {
+                    <div class="col-md-3">
+                        <div class="card mb-5">
+                            <div class="card-header text-center">
+                                @item.name
+                            </div>
+                            <div class="card-body text-center">
+                                <img src="~/images/@item.imagefilename" height="200" />
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-footer text-center">
+                                    <a asp-controller="items" asp-action="details" asp-route-id="@item.Id">More</a> |
+                                    <a asp-controller="orders" asp-action="buy" asp-route-id="@item.Id">Buy</a>
 
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                
+                }
+
+            
+            }
+
+
+
+
         }
 
+    
     }
+       
 </div>
-<div class="row mt-5">
-    <h4 class="text-center mb-4 text-white">Money Management Books</h4>
-    @foreach (var item in Model)
-    {
-        if (item.category == "money-management")
-        {
 
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header text-center">
-                        @item.name
-                    </div>
-                    <div class="card-body text-center">
-                        <img src="~/images/@item.imagefilename" height="200" />
-                    </div>
-                    <div class="card-footer">
-                        <div class="card-footer text-center">
-                            <a asp-controller="items" asp-action="details" asp-route-id="@item.Id">More</a> |
-                            <a asp-controller="orders" asp-action="buy" asp-route-id="@item.Id">Buy</a>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-
-    }
-</div>

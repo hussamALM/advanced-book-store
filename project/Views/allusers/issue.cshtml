@@ -1,0 +1,77 @@
+﻿@model IEnumerable<project.Models.issues>
+
+@{
+    ViewData["Title"] = "issues";
+}
+@{
+    Layout = "~/Views/Shared/customerLayout.cshtml";
+}
+
+<style>
+    body {
+        background-color: rgba(244, 233, 220, 0.411);
+    }
+
+</style>
+
+<h1 class="text-center ">Issues</h1>
+<hr class="mb-5" />
+
+<div class="container">
+
+
+        <button type="button" class="btn btn-danger btn-lg mb-3" data-toggle="modal" data-target="#reportIssueModal">Report an Issue</button>
+        @await Html.PartialAsync("reportIssue")
+
+    @if (Model.ToArray().Length==0)
+    {
+    <h1 class="text-center">You have no report!</h1>   
+    }
+    else{
+    <table class="table">
+    <thead class="bg-dark text-white">
+        <tr>
+        
+            <th>
+                @Html.DisplayNameFor(model => model.title)
+            </th>
+            <th>
+                details
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
+        </tr>
+    </thead>
+    <tbody class="bg-light">
+@foreach (var item in Model) {
+        <tr>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.descr)   
+            </td>
+            <td>
+                            @if (item.status == 1)
+                            {
+                                <p class="text-success">Solved</p>
+                            }
+                            else if (item.status==2)
+                            {
+                                <p class="text-danger">Rejected</p>
+
+                            }
+                            else
+                            {
+                                <p class="text-info">Waiting</p>
+
+                            }
+                        </td>
+          
+        </tr>
+}
+    </tbody>
+</table> }
+</div>

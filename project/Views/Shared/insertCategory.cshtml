@@ -1,0 +1,49 @@
+﻿@model project.Models.categories
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<!-- Modal -->
+<div class="modal fade" id="insertCategoryModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Insert New Category</h4>
+            </div>
+            <div class="modal-body" >
+
+<h1>Category Info</h1>
+<hr />
+<div class="row">
+
+    <div class="col-md-4">
+        <form asp-action="addCategory" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label asp-for="name" class="control-label">Category Name:</label>
+                                <input asp-for="name" class="form-control" />
+                                <span asp-validation-for="name" class="text-danger"></span>
+                                <div class="form-group">
+                                    <input type="submit" value="Add" class="btn btn-success mt-3" />
+                                </div>
+                            </div>
+        </form>
+    </div>
+</div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

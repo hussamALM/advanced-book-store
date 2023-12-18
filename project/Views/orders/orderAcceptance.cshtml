@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Orders Acceptance";
+}
+@{
+    Layout = "~/Views/Shared/adminLayout.cshtml";
+}
+<style>
+    body {
+        background-color: rgba(244, 233, 220, 0.411);
+    }
+
+   
+</style>
+<h1 class="text-center">Server Status</h1>
+<hr class="mb-5" />
+<div class="container text-center">
+<h1 class="text-center">the server status is: @ViewData["status"]</h1>
+    <p>this status refers to accept new orders from the customers</p>
+    <a class="btn btn-success mt-5" asp-action="serverOn">Turn On</a>
+    <a class="btn btn-danger mt-5" asp-action="serverOff">Turn Off</a>
+
+</div>

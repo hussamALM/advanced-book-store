@@ -1,0 +1,148 @@
+﻿@model IEnumerable<project.Models.issuesdetail>
+
+@{
+    ViewData["Title"] = "issues report";
+}
+@{
+    Layout = "~/Views/Shared/adminLayout.cshtml";
+}
+
+<style>
+    body {
+        background-color: rgba(244, 233, 220, 0.411);
+    }
+
+</style>
+<h1 style="opacity:0; position:absolute" id="temp">@ViewData["new"]</h1>
+
+<h1 class="text-center ">Issues</h1>
+<hr class="mb-5" />
+
+<div class="container">
+
+    @if (Model.ToArray().Length == 0)
+    {
+        <h1 class="text-center">there is no new report!</h1>
+    }
+    else
+    {
+        <table class="table" id="table1">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.name)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.details)
+
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.status)
+
+                    </th>
+                    <th colspan="2" class="text-center">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-light" >
+                @foreach (var item in Model)
+                {
+                    if (item.status==0) { 
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.details)
+                        </td>
+                        <td>              
+                         <p class="text-info">Waiting</p> 
+                        </td>
+                            <td class="text-center">
+                            <a class="btn btn-success"  asp-action="solveIssue" asp-route-id="@item.Id">Done</a>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-danger" asp-action="rejectIssue" asp-route-id="@item.Id">Reject</a>
+
+                            </td>
+                    </tr>
+                }}
+            </tbody>
+        </table>
+        <h1 class="text-center mb-3" style="margin-top:150px;">Handled Issues</h1>
+        <table class="table">
+            <thead class="bg-light text-dark">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.name)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.details)
+
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.status)
+
+                    </th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-light">
+                @foreach (var item in Model)
+                {
+                    if (item.status == 1 || item.status==2)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.details)
+                            </td>
+                            <td>
+                                @if (item.status == 1)
+                                {
+                                    <p class="text-success">Solved</p>
+                                }
+                                else 
+                                {
+                                    <p class="text-danger">Rejected</p>
+
+                                }
+                               
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-info" asp-action="restoreIssue" asp-route-id="@item.Id">Restore</a>
+                            </td>  
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+</div>
+<script>
+    let cond = document.getElementById("temp").innerHTML;
+    if(cond == "yes"){
+        document.getElementById("table1").innerHTML = `<h1 class="text-center">there is no new report!</h1>`;
+    }
+</script>

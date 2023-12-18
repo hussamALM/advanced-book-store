@@ -41,19 +41,19 @@
     <tbody class="bg-light">
 @foreach (var item in Model) {
         <tr>
-            <td>
+                    <td style="vertical-align: middle;">
                 @Html.DisplayFor(modelItem => item.name)
             </td>
-            <td>
+                    <td style="vertical-align: middle;">
                 @Html.DisplayFor(modelItem => item.password)
             </td>
-            <td>
+                    <td style="vertical-align: middle;">
                 @Html.DisplayFor(modelItem => item.role)
             </td>
-            <td>
+                    <td style="vertical-align: middle;">
                 @Html.DisplayFor(modelItem => item.registDate)
             </td>
-            <td>
+                    <td style="vertical-align: middle;">
                         <a asp-action="Edit" class="btn btn btn-warning" asp-route-id="@item.Id">Edit</a> 
                     </td>
                     <td>

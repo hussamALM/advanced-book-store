@@ -1,0 +1,161 @@
+﻿@model IEnumerable<project.Models.items>
+
+@{
+    ViewData["Title"] = "Details";
+}
+@{
+    Layout = "~/Views/Shared/customerLayout.cshtml";
+}
+
+<style>
+    body {
+        background-color: rgba(244, 233, 220, 0.411);
+    }
+</style>
+<div id="userid" style="opacity: 0; position: absolute">
+    @ViewData["userid"]
+</div>
+<h1 class="text-center">Cart</h1>
+<hr class="mb-5" />
+<div class="container">
+    @if (Model.ToArray().Length == 0)
+    {
+        <div class="text-center">
+            <h1 class="text-center">there are no items in your shopping cart</h1>
+            <a asp-action="Catalog" class="btn btn-warning mt-5">Catalog</a>
+        </div>
+
+    }
+    else
+    {
+        <p>
+            <a asp-action="Index" class="btn btn-warning">Explore More of our Collection</a>
+        </p>
+        <table class="table">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th></th>
+                    <th>@Html.DisplayNameFor(model => model.name)</th>
+
+                    <th>@Html.DisplayNameFor(model => model.price)</th>
+                    <th>quantity</th>
+                    <th>@Html.DisplayNameFor(model => model.discount)</th>
+                    <th>Image</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="bg-light">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="vertical-align: middle;">
+                            <input type="hidden" value="@item.Id" name="ids" />
+                        </td>
+                        <td style="vertical-align: middle;">@Html.DisplayFor(modelItem => item.name)</td>
+
+                        <td style="vertical-align: middle;">
+                            <div name="prices">@Html.DisplayFor(modelItem => item.price)</div>
+                        </td>
+                        <td style="vertical-align: middle;">
+                            <select class="btn btn-light"
+                                    style="border: solid 1px black"
+                                    name="qus"
+                                    onchange="getTotal()">
+                                @for (int i = 1; i <= item.quantity && i <= 5; i++)
+                                {
+
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </td>
+                        <td style="vertical-align: middle;">@Html.DisplayFor(modelItem => item.discount)</td>
+                        <td>
+                            <img src="~/images/@item.imagefilename" height="70px" />
+                        </td>
+                        <td style="vertical-align: middle;"><a class="btn btn-danger" asp-action="removeCartItem" asp-route-id="@item.Id">Remove</a></td>
+                    </tr>
+
+                }
+                <tr>
+                    <td id="tfoot" colspan="2" class="bg-light"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            <a asp-action="clearCart" class="btn btn-danger">Clear Cart</a>
+
+            <button onclick="confirmOrder()" @(
+                (string)ViewData["acceptOrder"] == "no" ? "disabled" : String.Empty) class="btn btn-success">
+                Order
+            </button>
+            @if ((string)ViewData["acceptOrder"] == "no")
+            {
+            <p class="text-danger">We are not accepting new orders ATM</p>    
+            
+            }
+
+            
+            
+        </p>
+    }
+    <div id="msg"></div>
+</div>
+<script>
+    let info = [];
+    let total = 0;
+    function confirmOrder() {
+        let check = confirm(`your total is ${total}, confirm the order ?`);
+        if (!check) {
+            return;
+        }
+        completeOrder();
+    }
+    async function completeOrder() {
+        loadInfo();
+        console.log(info);
+        let Id = document.getElementById("userid").innerHTML.trim()
+        console.log(Id);
+        order = {
+            books: info,
+            userId: Id,
+        };
+        let options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(order),
+        };
+
+        let response = await await fetch("/API", options);
+        let text = await response.text();
+        if (text == "Done") {
+            alert(
+                "Thanks for ordering, your order is now complete, check it out on (My Purchase) page !"
+            );
+            var url = '@Url.Action("completeOrder", "items")';
+            window.location.href = url;
+        }
+        document.getElementById("msg").innerHTML = text;
+    }
+    function getTotal() {
+        total = 0;
+        let pricesNodes = document.getElementsByName("prices");
+        let qusNodes = document.getElementsByName("qus");
+        for (let i = 0; i < pricesNodes.length; i++) {
+            total += pricesNodes[i].innerHTML * qusNodes[i].value;
+        }
+        document.getElementById(
+            "tfoot"
+        ).innerHTML = `<h6>your totol are: ${total}</h6>`;
+    }
+    getTotal();
+    function loadInfo() {
+        let idsNode = document.getElementsByName("ids");
+        let qusNodes = document.getElementsByName("qus");
+        for (let i = 0; i < idsNode.length; i++) {
+            info.push([idsNode[i].value, qusNodes[i].value]);
+        }
+    }
+</script>

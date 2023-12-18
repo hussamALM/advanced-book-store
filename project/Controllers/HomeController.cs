@@ -138,7 +138,10 @@ namespace project.Controllers
         {
             return View();
         }
-
+        public IActionResult noOrder()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

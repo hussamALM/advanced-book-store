@@ -18,7 +18,7 @@
 }
 
 <table class="table mx-auto" style="width:98%" id="info">
-    @if (Model==null)
+    @if (Model.ToArray().Length == 0)
     {
         <h1 class="text-center">no data to be shown</h1>
     } else{
